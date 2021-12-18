@@ -17,7 +17,7 @@ const initialState = {
 			title: "id",
 			width: 120,
 			fixed: true,
-			sorter: (a, b) => a.id - b.id,
+			sorter: (a, b) => a.id - b.id
 		},
 		sourceId: {
 			title: "source id",
@@ -169,6 +169,9 @@ export default function commonReducer(state = initialState, action) {
 			return {
 				...state,
 				data: action.payload.data,
+				initialData: action.payload.data,
+				sortBy: "",
+				sortDirection: 0,
 				...action.payload.metaData,
 				inProgress: false,
 			};
@@ -199,7 +202,10 @@ export default function commonReducer(state = initialState, action) {
 			return {
 				...state,
 				filter: action.filter,
-				data: action.error ? state.data : action.payload.data,
+				data: action.payload.data,
+				initialData: action.payload.data,
+				sortBy: "",
+				sortDirection: 0,
 				...action.payload.metaData,
 				inProgress: false,
 			};

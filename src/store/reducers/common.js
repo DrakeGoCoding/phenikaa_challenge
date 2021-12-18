@@ -5,6 +5,7 @@ import {
 	CHANGE_PAGE,
 	DRAG_COLUMN,
 	FILTER,
+	SORT,
 	TOGGLE_ALL_COLUMNS,
 	TOGGLE_COLUMN,
 } from "../actions";
@@ -16,19 +17,19 @@ const initialState = {
 			title: "id",
 			width: 120,
 			fixed: true,
-			sorter: () => {}
+			sorter: (a, b) => a.id - b.id,
 		},
 		sourceId: {
 			title: "source id",
 			width: 150,
 			hidden: true,
-			sorter: () => {}
+			sorter: (a, b) => a.sourceId - b.sourceId,
 		},
 		title: {
 			title: "title",
 			width: 200,
 			fixed: true,
-			sorter: () => {}
+			sorter: (a, b) => a.title.localeCompare(b.title),
 		},
 		issn: {
 			title: "issn",
@@ -75,12 +76,12 @@ const initialState = {
 		year: {
 			title: "year",
 			width: 120,
-			sorter: () => {}
+			sorter: (a, b) => a.year - b.year,
 		},
 		country: {
 			title: "country",
 			width: 150,
-			hidden: true
+			hidden: true,
 		},
 		region: {
 			title: "region",
@@ -91,37 +92,40 @@ const initialState = {
 			title: "total docs",
 			width: 150,
 			hidden: true,
-			sorter: () => {}
+			sorter: (a, b) => a.totalDocs - b.totalDocs,
 		},
 		totalRefs: {
 			title: "total refs",
 			width: 150,
 			hidden: true,
-			sorter: () => {}
+			sorter: (a, b) => a.totalRefs - b.totalRefs,
 		},
 		impactFactor: {
 			title: "impact factor",
 			width: 200,
-			hidden: true
+			hidden: true,
 		},
 		sjrNum: {
 			title: "sjr",
 			width: 120,
-			sorter: () => {}
+			sorter: (a, b) => a.sjrNum - b.sjrNum,
 		},
 		sjrBestQuartile: {
 			title: "best quartile",
 			width: 180,
 			hidden: true,
-			sorter: () => {}
+			sorter: (a, b) =>
+				a.sjrBestQuartile.localeCompare(b.sjrBestQuartile),
 		},
 		rank: {
 			title: "rank",
 			width: 120,
 			fixed: true,
-			sorter: () => {}
+			sorter: (a, b) => a.rank.localeCompare(b.rank),
 		},
 	},
+	sortDirection: 0,
+	sortBy: "",
 	data: [],
 	modelType: "journals",
 };
@@ -144,6 +148,7 @@ export default function commonReducer(state = initialState, action) {
 				pager: action.pager,
 				filter: {},
 				data: action.payload.data,
+				initialData: action.payload.data,
 				...action.payload.metaData,
 				inProgress: false,
 			};
@@ -198,6 +203,41 @@ export default function commonReducer(state = initialState, action) {
 				...action.payload.metaData,
 				inProgress: false,
 			};
+
+		case SORT: {
+			const sorter = state.headings[action.key].sorter;
+			let sortDirection = 0;
+			let sortBy = "";
+			let data = [...state.initialData];
+			if (state.sortBy !== action.key) {
+				state.sortDirection = 0;
+			}
+			switch (state.sortDirection) {
+				case 0:
+					data.sort(sorter);
+					sortBy = action.key;
+					sortDirection = 1;
+					break;
+				case 1:
+					data.sort(sorter).reverse();
+					sortBy = action.key;
+					sortDirection = -1;
+					break;
+				case -1:
+					sortDirection = 0;
+					break;
+				default:
+					break;
+			}
+
+			return {
+				...state,
+				sorter: sorter,
+				sortBy,
+				sortDirection,
+				data,
+			};
+		}
 
 		default:
 			return state;

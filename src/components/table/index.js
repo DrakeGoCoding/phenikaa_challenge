@@ -1,6 +1,7 @@
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { DRAG_COLUMN } from "../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import classNames from "classnames";
+import { DRAG_COLUMN, SORT } from "../../store/actions";
 import Spinner from "../spinner";
 import { ReactComponent as UpSvg } from "../../assets/up.svg";
 import { ReactComponent as DownSvg } from "../../assets/down.svg";
@@ -8,6 +9,7 @@ import "./index.css";
 
 function TableHeader({ headings }) {
 	const dispatch = useDispatch();
+	const { sortBy, sortDirection } = useSelector((state) => state.common);
 	const headerRefs = useRef([]);
 
 	const onColumnDragStart = (index) => {
@@ -60,6 +62,10 @@ function TableHeader({ headings }) {
 		}
 	};
 
+	const onSortBy = (key) => {
+		dispatch({ type: SORT, key });
+	};
+
 	return (
 		<thead>
 			<tr>
@@ -87,9 +93,34 @@ function TableHeader({ headings }) {
 									<div className="th-title">
 										<span>{title}</span>
 										{sorter && (
-											<span className="th-sorter th-utils-btn">
-												<UpSvg className="th-sorter-up" />
-												<DownSvg className="th-sorter-down" />
+											<span
+												className="th-sorter th-utils-btn"
+												onClick={() => onSortBy(key)}
+											>
+												<UpSvg
+													className={classNames(
+														"th-sorter-up",
+														{
+															active:
+																sortBy ===
+																	key &&
+																sortDirection ===
+																	1,
+														}
+													)}
+												/>
+												<DownSvg
+													className={classNames(
+														"th-sorter-down",
+														{
+															active:
+																sortBy ===
+																	key &&
+																sortDirection ===
+																	-1,
+														}
+													)}
+												/>
 											</span>
 										)}
 									</div>

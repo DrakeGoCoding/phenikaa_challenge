@@ -172,11 +172,9 @@ function FilterDialog({ headings, filter, onFilter }) {
 
 function ExportCSVButton({ data, headers, fileName }) {
 	return (
-		<button className="export-csv-btn base-btn">
-			<CSVLink data={data} headers={headers} filename={fileName}>
-				Export CSV
-			</CSVLink>
-		</button>
+		<CSVLink data={data} headers={headers} filename={fileName}>
+			<button className="export-csv-btn base-btn">Export CSV</button>
+		</CSVLink>
 	);
 }
 

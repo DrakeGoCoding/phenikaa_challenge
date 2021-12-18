@@ -1,0 +1,46 @@
+.table-control {
+	margin-bottom: 1em;
+	display: flex;
+	justify-content: space-between;
+}
+
+.table-control .left-side,
+.table-control .right-side {
+	display: flex;
+	flex-direction: row;
+}
+
+.table-control .left-side > * {
+	margin-right: 1rem;
+}
+
+.table-control .right-side > * {
+	margin-left: 1rem;
+}
+
+.table-control .columns-dialog {
+	display: flex;
+	flex-direction: column;
+}
+
+.table-control .columns-dialog .column-checkall {
+	border-bottom: 1px solid #dcdcdc;
+}
+
+.table-control .columns-dialog .column-list {
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+}
+
+.table-control .columns-dialog .checkbox-container {
+	width: max-content;
+	height: 30px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 8px;
+}
+
+.table-control .checkbox-container input {
+	margin-right: 8px;
+}

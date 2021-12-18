@@ -3,14 +3,14 @@ import { useMemo, useRef, useState } from "react";
 import { CSVLink } from "react-csv";
 import Tooltip from "../tooltip";
 import Dialog from "../dialog";
+import Select from "../select";
+import Input from "../input";
 import { ReactComponent as ReloadSvg } from "../../assets/reload.svg";
 import { ReactComponent as EyeSvg } from "../../assets/eye.svg";
 import { ReactComponent as CloseSvg } from "../../assets/close.svg";
 import { ReactComponent as LoadingSvg } from "../../assets/loading.svg";
-import "./index.css";
 import { FILTER, TOGGLE_ALL_COLUMNS, UPDATE_FILTER } from "../../store/actions";
-import Select from "../select";
-import Input from "../input";
+import "./index.css";
 
 function ColumnDialog({ headings, onColumnCheck }) {
 	const dispatch = useDispatch();
@@ -60,28 +60,30 @@ function FilterDialog({ headings, filter, onFilter }) {
 	const newFilterInputRef = useRef(null);
 	const dispatch = useDispatch();
 
+	const columnOptions = useMemo(() => {
+		return Object.keys(headings).map((key) => {
+			return {
+				title: headings[key].title,
+				value: headings[key].ref,
+				isNumber: headings[key].isNumber,
+			};
+		});
+	}, [headings]);
+
 	const [newFilter, setNewFilter] = useState({
 		key: "id",
 		value: "",
 	});
 
-	const changeNewFilterKey = (value) =>
+	const changeNewFilterKey = (value) => {
 		setNewFilter({ ...newFilter, key: value });
+	};
 	const changeNewFilterValue = (value) =>
 		setNewFilter({ ...newFilter, value });
 
 	const updateFilter = (key, value) => {
 		dispatch({ type: UPDATE_FILTER, key, value });
 	};
-
-	const columnOptions = useMemo(() => {
-		return Object.keys(headings).map((key) => {
-			return {
-				title: headings[key].title,
-				value: headings[key].ref,
-			};
-		});
-	}, [headings]);
 
 	const appendNewFilter = () => {
 		if (!newFilter.value) {
@@ -221,9 +223,15 @@ function TableControl({ onReload, onColumnCheck }) {
 	}, [headings]);
 
 	const onFilter = () => {
+		const mutatedFilter = { ...filter };
+		Object.values(headings).forEach((value) => {
+			if (mutatedFilter[value.ref] && value.isNumber) {
+				mutatedFilter[value.ref] = Number(mutatedFilter[value.ref]) || 0;
+			}
+		});
 		dispatch({
 			type: FILTER,
-			payload: pager(filter, page),
+			payload: pager(mutatedFilter, page),
 		});
 	};
 

@@ -17,6 +17,7 @@ const initialState = {
 		id: {
 			title: "id",
 			ref: "id",
+			isNumber: true,
 			width: 120,
 			fixed: true,
 			sorter: (a, b) => a.id - b.id,
@@ -84,6 +85,7 @@ const initialState = {
 		year: {
 			title: "year",
 			ref: "year",
+			isNumber: true,
 			width: 120,
 			sorter: (a, b) => a.year - b.year,
 		},
@@ -102,6 +104,7 @@ const initialState = {
 		totalDocs: {
 			title: "total docs",
 			ref: "totalDocs",
+			isNumber: true,
 			width: 150,
 			hidden: true,
 			sorter: (a, b) => a.totalDocs - b.totalDocs,
@@ -109,6 +112,7 @@ const initialState = {
 		totalRefs: {
 			title: "total refs",
 			ref: "totalRefs",
+			isNumber: true,
 			width: 150,
 			hidden: true,
 			sorter: (a, b) => a.totalRefs - b.totalRefs,
@@ -122,6 +126,7 @@ const initialState = {
 		sjrNum: {
 			title: "sjr",
 			ref: "sjrNum",
+			isNumber: true,
 			width: 120,
 			sorter: (a, b) => a.sjrNum - b.sjrNum,
 		},

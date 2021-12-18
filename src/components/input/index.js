@@ -1,20 +1,24 @@
+import { forwardRef } from "react";
 import "./index.css";
 
-export default function Input({ type, value, disabled, onChange, onEnter }) {
+const Input = forwardRef((props, ref) => {
 	const onKeyUp = (e) => {
 		if (e.key === "Enter") {
-			onEnter();
+			props.onEnter();
 		}
 	};
 
 	return (
 		<input
 			className="custom-input"
-			type={type}
-			value={value}
-			disabled={disabled}
-			onChange={(e) => onChange(e.target.value)}
+			ref={ref}
+			type={props.type}
+			value={props.value}
+			disabled={props.disabled}
+			onChange={(e) => props.onChange(e.target.value)}
 			onKeyUp={onKeyUp}
 		/>
 	);
-}
+})
+
+export default Input;

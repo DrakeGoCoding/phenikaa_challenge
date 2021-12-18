@@ -57,6 +57,7 @@ function ColumnDialog({ headings, onColumnCheck }) {
 
 function FilterDialog({ headings, filter, onFilter }) {
 	const filterTableBodyRef = useRef(null);
+	const newFilterInputRef = useRef(null);
 	const dispatch = useDispatch();
 
 	const [newFilter, setNewFilter] = useState({
@@ -84,6 +85,7 @@ function FilterDialog({ headings, filter, onFilter }) {
 
 	const appendNewFilter = () => {
 		if (!newFilter.value) {
+			newFilterInputRef.current.focus();
 			return;
 		}
 		updateFilter(newFilter.key, newFilter.value);
@@ -122,6 +124,7 @@ function FilterDialog({ headings, filter, onFilter }) {
 								</td>
 								<td>
 									<Input
+										ref={newFilterInputRef}
 										type="text"
 										disabled={true}
 										value={filter[key]}
@@ -144,6 +147,7 @@ function FilterDialog({ headings, filter, onFilter }) {
 						<td>
 							<Input
 								type="text"
+								ref={newFilterInputRef}
 								value={newFilter.value}
 								onChange={changeNewFilterValue}
 								onEnter={appendNewFilter}

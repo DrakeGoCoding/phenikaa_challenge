@@ -5,7 +5,6 @@ import Tooltip from "../tooltip";
 import Dialog from "../dialog";
 import { ReactComponent as ReloadSvg } from "../../assets/reload.svg";
 import { ReactComponent as EyeSvg } from "../../assets/eye.svg";
-import { ReactComponent as CsvSvg } from "../../assets/csv.svg";
 import { ReactComponent as CloseSvg } from "../../assets/close.svg";
 import { ReactComponent as LoadingSvg } from "../../assets/loading.svg";
 import "./index.css";

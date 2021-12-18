@@ -147,6 +147,7 @@ function FilterDialog({ headings, filter, onFilter }) {
 								type="text"
 								value={newFilter.value}
 								onChange={changeNewFilterValue}
+								onEnter={appendNewFilter}
 							/>
 						</td>
 					</tr>

@@ -173,9 +173,9 @@ function FilterDialog({ headings, filter, onFilter }) {
 
 function ExportCSVButton({ data, headers, fileName }) {
 	return (
-		<button className="second-btn">
+		<button className="export-csv-btn base-btn">
 			<CSVLink data={data} headers={headers} filename={fileName}>
-				<CsvSvg />
+				Export CSV
 			</CSVLink>
 		</button>
 	);
@@ -244,6 +244,11 @@ function TableControl({ onReload, onColumnCheck }) {
 						Filter
 					</button>
 				</Dialog>
+				<ExportCSVButton
+					data={exportedData}
+					headers={exportedHeaders}
+					fileName={modelType}
+				/>
 			</div>
 			<div className="right-side">
 				<Dialog
@@ -265,13 +270,6 @@ function TableControl({ onReload, onColumnCheck }) {
 						</button>
 					</Tooltip>
 				</Dialog>
-				<Tooltip content="Export">
-					<ExportCSVButton
-						data={exportedData}
-						headers={exportedHeaders}
-						fileName={modelType}
-					/>
-				</Tooltip>
 				<Tooltip content="Reload">
 					<button className="second-btn" onClick={onReload}>
 						<ReloadSvg />

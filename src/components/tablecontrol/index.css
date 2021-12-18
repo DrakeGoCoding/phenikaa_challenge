@@ -18,6 +18,12 @@
 	margin-left: 1rem;
 }
 
+.table-control .export-csv-btn a {
+	color: #ffffff;
+	text-decoration: none;
+	text-transform: none;
+}
+
 .table-control .columns-dialog {
 	display: flex;
 	flex-direction: column;

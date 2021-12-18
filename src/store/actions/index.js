@@ -6,3 +6,4 @@ export const FILTER = "FILTER";
 export const SORT = "SORT";
 export const TOGGLE_ALL_COLUMNS = "TOGGLE_ALL_COLUMNS";
 export const TOGGLE_COLUMN = "TOGGLE_COLUMN";
+export const UPDATE_FILTER = "UPDATE_FILTER";

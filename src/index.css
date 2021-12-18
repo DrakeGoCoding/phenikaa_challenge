@@ -27,3 +27,7 @@ button {
 button:disabled {
 	cursor: not-allowed;
 }
+
+svg {
+	cursor: pointer;
+}

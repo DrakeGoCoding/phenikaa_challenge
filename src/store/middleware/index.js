@@ -11,7 +11,7 @@ export const promiseMiddleware = (store) => (next) => (action) => {
 			},
 			(error) => {
 				action.error = true;
-				action.payload = error.response.data;
+				action.payload = error.message;
 				store.dispatch(action);
 			}
 		);

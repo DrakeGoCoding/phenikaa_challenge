@@ -41,6 +41,35 @@
 	padding: 8px;
 }
 
+.table-control .filter-dialog .add-filter-btn {
+	padding-left: 8px;
+	font-size: 14px;
+}
+
+.table-control .filter-dialog .start-filter-btn {
+	font-size: 14px;
+	height: 32px;
+}
+
+.table-control .filter-dialog .filter-table {
+	border-spacing: 0;
+	width: 100%;
+	text-align: left;
+}
+
+.table-control .filter-dialog .filter-table th,
+.table-control .filter-dialog .filter-table td {
+	padding: 8px 12px;
+	font-size: 14px;
+}
+
+.table-control .filter-dialog .filter-dialog-footer {
+	margin-top: 8px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .table-control .checkbox-container input {
 	margin-right: 8px;
 }

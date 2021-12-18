@@ -1,13 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { CSVLink } from "react-csv";
 import Tooltip from "../tooltip";
 import Dialog from "../dialog";
 import { ReactComponent as ReloadSvg } from "../../assets/reload.svg";
 import { ReactComponent as EyeSvg } from "../../assets/eye.svg";
 import { ReactComponent as CsvSvg } from "../../assets/csv.svg";
+import { ReactComponent as CloseSvg } from "../../assets/close.svg";
+import { ReactComponent as LoadingSvg } from "../../assets/loading.svg";
 import "./index.css";
-import { TOGGLE_ALL_COLUMNS } from "../../store/actions";
+import { FILTER, TOGGLE_ALL_COLUMNS, UPDATE_FILTER } from "../../store/actions";
+import Select from "../select";
+import Input from "../input";
 
 function ColumnDialog({ headings, onColumnCheck }) {
 	const dispatch = useDispatch();
@@ -52,6 +56,118 @@ function ColumnDialog({ headings, onColumnCheck }) {
 	);
 }
 
+function FilterDialog({ headings, filter, onFilter }) {
+	const filterTableBodyRef = useRef(null);
+	const dispatch = useDispatch();
+
+	const [newFilter, setNewFilter] = useState({
+		key: "id",
+		value: "",
+	});
+
+	const changeNewFilterKey = (value) =>
+		setNewFilter({ ...newFilter, key: value });
+	const changeNewFilterValue = (value) =>
+		setNewFilter({ ...newFilter, value });
+
+	const updateFilter = (key, value) => {
+		dispatch({ type: UPDATE_FILTER, key, value });
+	};
+
+	const columnOptions = useMemo(() => {
+		return Object.keys(headings).map((key) => {
+			return {
+				title: headings[key].title,
+				value: headings[key].ref,
+			};
+		});
+	}, [headings]);
+
+	const appendNewFilter = () => {
+		if (!newFilter.value) {
+			return;
+		}
+		updateFilter(newFilter.key, newFilter.value);
+		setNewFilter({ key: "id", value: "" });
+	};
+
+	const removeFilter = (key) => {
+		updateFilter(key, undefined);
+	};
+
+	return (
+		<div className="filter-dialog">
+			<table className="filter-table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>COLUMN</th>
+						<th>VALUE</th>
+					</tr>
+				</thead>
+				<tbody ref={filterTableBodyRef}>
+					{Object.keys(filter).map((key) => {
+						return (
+							<tr key={key}>
+								<td>
+									<CloseSvg
+										onClick={() => removeFilter(key)}
+									/>
+								</td>
+								<td>
+									<Select
+										options={columnOptions}
+										value={key}
+										onChange={(value) =>
+											updateFilter(key, value)
+										}
+									/>
+								</td>
+								<td>
+									<Input type="text" value={filter[key]} />
+								</td>
+							</tr>
+						);
+					})}
+					<tr>
+						<td>
+							<LoadingSvg />
+						</td>
+						<td>
+							<Select
+								value={newFilter.key}
+								options={columnOptions}
+								onChange={changeNewFilterKey}
+							/>
+						</td>
+						<td>
+							<Input
+								type="text"
+								value={newFilter.value}
+								onChange={changeNewFilterValue}
+							/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div className="filter-dialog-footer">
+				<button
+					className="add-filter-btn text-btn"
+					onClick={appendNewFilter}
+				>
+					+ ADD FILTER
+				</button>
+				<button
+					className="start-filter-btn base-btn"
+					onClick={onFilter}
+				>
+					Start
+				</button>
+			</div>
+		</div>
+	);
+}
+
 function ExportCSVButton({ data, headers, fileName }) {
 	return (
 		<button className="second-btn">
@@ -63,10 +179,16 @@ function ExportCSVButton({ data, headers, fileName }) {
 }
 
 function TableControl({ onReload, onColumnCheck }) {
-	const { data, headings, modelType } = useSelector((state) => state.common);
+	const dispatch = useDispatch();
+	const { data, headings, filter, pager, page, modelType } = useSelector(
+		(state) => state.common
+	);
 	const [isEyeDialogVisible, setEyeDialogVisible] = useState(false);
+	const [isFilterDialogVisible, setFilterDialogVisible] = useState(false);
 
-	const toggleEyeBtn = () => setEyeDialogVisible(!isEyeDialogVisible);
+	const toggleViewsDialog = () => setEyeDialogVisible(!isEyeDialogVisible);
+	const toggleFilterDialog = () =>
+		setFilterDialogVisible(!isFilterDialogVisible);
 
 	const exportedData = useMemo(() => {
 		return data.map((item) => {
@@ -94,9 +216,32 @@ function TableControl({ onReload, onColumnCheck }) {
 		return exportHeader;
 	}, [headings]);
 
+	const onFilter = () => {
+		dispatch({
+			type: FILTER,
+			payload: pager(filter, page),
+		});
+	};
+
 	return (
 		<div className="table-control">
-			<div className="left-side"></div>
+			<div className="left-side">
+				<Dialog
+					visible={isFilterDialogVisible}
+					position="bottom-left"
+					content={
+						<FilterDialog
+							headings={headings}
+							filter={filter}
+							onFilter={onFilter}
+						/>
+					}
+				>
+					<button className="base-btn" onClick={toggleFilterDialog}>
+						Filter
+					</button>
+				</Dialog>
+			</div>
 			<div className="right-side">
 				<Dialog
 					visible={isEyeDialogVisible}
@@ -109,7 +254,10 @@ function TableControl({ onReload, onColumnCheck }) {
 					}
 				>
 					<Tooltip content="Views">
-						<button className="second-btn" onClick={toggleEyeBtn}>
+						<button
+							className="second-btn"
+							onClick={toggleViewsDialog}
+						>
 							<EyeSvg />
 						</button>
 					</Tooltip>

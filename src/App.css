@@ -1,3 +1,17 @@
+.base-btn {
+	background-color: #4caf50;
+	color: #ffffff;
+	font-size: 14px;
+}
+
+.base-btn:hover {
+	background-color: #69cf6c;
+}
+
+.base-btn:active {
+	background-color: #389e0d;
+}
+
 .second-btn {
 	border: 1px solid #c2c5ca;
 	background-color: transparent;
@@ -10,6 +24,14 @@
 
 .second-btn:active {
 	background-color: #d3d4d4;
+}
+
+.text-btn {
+	background-color: transparent;
+	color: #4caf50;
+	padding: 0;
+	width: max-content;
+	height: auto;
 }
 
 .tag {

@@ -8,6 +8,7 @@ import {
 	SORT,
 	TOGGLE_ALL_COLUMNS,
 	TOGGLE_COLUMN,
+	UPDATE_FILTER,
 } from "../actions";
 
 const initialState = {
@@ -15,28 +16,33 @@ const initialState = {
 	headings: {
 		id: {
 			title: "id",
+			ref: "id",
 			width: 120,
 			fixed: true,
-			sorter: (a, b) => a.id - b.id
+			sorter: (a, b) => a.id - b.id,
 		},
 		sourceId: {
 			title: "source id",
+			ref: "sourceId",
 			width: 150,
 			hidden: true,
 			sorter: (a, b) => a.sourceId - b.sourceId,
 		},
 		title: {
 			title: "title",
+			ref: "title",
 			width: 200,
 			fixed: true,
 			sorter: (a, b) => a.title.localeCompare(b.title),
 		},
 		issn: {
 			title: "issn",
+			ref: "issn",
 			width: 120,
 		},
 		categoriesArray: {
 			title: "categories",
+			ref: "categories",
 			width: 150,
 			render: (data) => {
 				return (
@@ -54,6 +60,7 @@ const initialState = {
 		},
 		areasArray: {
 			title: "areas",
+			ref: "areas",
 			width: 150,
 			render: (data) => {
 				return (
@@ -71,47 +78,56 @@ const initialState = {
 		},
 		publisher: {
 			title: "publisher",
+			ref: "publisher",
 			width: 200,
 		},
 		year: {
 			title: "year",
+			ref: "year",
 			width: 120,
 			sorter: (a, b) => a.year - b.year,
 		},
 		country: {
 			title: "country",
+			ref: "country",
 			width: 150,
 			hidden: true,
 		},
 		region: {
 			title: "region",
+			ref: "region",
 			width: 150,
 			hidden: true,
 		},
 		totalDocs: {
 			title: "total docs",
+			ref: "totalDocs",
 			width: 150,
 			hidden: true,
 			sorter: (a, b) => a.totalDocs - b.totalDocs,
 		},
 		totalRefs: {
 			title: "total refs",
+			ref: "totalRefs",
 			width: 150,
 			hidden: true,
 			sorter: (a, b) => a.totalRefs - b.totalRefs,
 		},
 		impactFactor: {
 			title: "impact factor",
+			ref: "impactFactor",
 			width: 200,
 			hidden: true,
 		},
 		sjrNum: {
 			title: "sjr",
+			ref: "sjrNum",
 			width: 120,
 			sorter: (a, b) => a.sjrNum - b.sjrNum,
 		},
 		sjrBestQuartile: {
 			title: "best quartile",
+			ref: "sjrBestQuartile",
 			width: 180,
 			hidden: true,
 			sorter: (a, b) =>
@@ -119,6 +135,7 @@ const initialState = {
 		},
 		rank: {
 			title: "rank",
+			ref: "rank",
 			width: 120,
 			fixed: true,
 			sorter: (a, b) => a.rank.localeCompare(b.rank),
@@ -126,7 +143,12 @@ const initialState = {
 	},
 	sortDirection: 0,
 	sortBy: "",
+	filter: {},
+	page: 1,
+	pageSize: 100,
+	total: 0,
 	data: [],
+	initialData: [],
 	modelType: "journals",
 };
 
@@ -146,10 +168,11 @@ export default function commonReducer(state = initialState, action) {
 			return {
 				...state,
 				pager: action.pager,
-				filter: {},
-				data: action.payload.data,
-				initialData: action.payload.data,
-				...action.payload.metaData,
+				data: action.error ? initialState.initialData : action.payload.data,
+				initialData: action.error ? initialState.initialData : action.payload.data,
+				page: action.error ? initialState.page : action.payload.metaData.page,
+				pageSize: action.error ? initialState.pageSize : action.payload.metaData.pageSize,
+				total: action.error ? initialState.pageSize : action.payload.metaData.total,
 				inProgress: false,
 			};
 
@@ -168,11 +191,13 @@ export default function commonReducer(state = initialState, action) {
 		case CHANGE_PAGE:
 			return {
 				...state,
-				data: action.payload.data,
-				initialData: action.payload.data,
+				data: action.error ? state.data : action.payload.data,
+				initialData: action.error ? state.initialData : action.payload.data,
 				sortBy: "",
 				sortDirection: 0,
-				...action.payload.metaData,
+				page: action.error ? state.page : action.payload.metaData.page,
+				pageSize: action.error ? state.pageSize : action.payload.metaData.pageSize,
+				total: action.error ? state.pageSize : action.payload.metaData.total,
 				inProgress: false,
 			};
 
@@ -198,15 +223,29 @@ export default function commonReducer(state = initialState, action) {
 			};
 		}
 
+		case UPDATE_FILTER: {
+			let updatedFilter = { ...state.filter };
+			if (action.value === undefined) {
+				delete updatedFilter[action.key];
+			} else {
+				updatedFilter[action.key] = action.value;
+			}
+			return {
+				...state,
+				filter: updatedFilter,
+			};
+		}
+
 		case FILTER:
 			return {
 				...state,
-				filter: action.filter,
-				data: action.payload.data,
-				initialData: action.payload.data,
+				data: action.error ? state.data : action.payload.data,
+				initialData: action.error ? state.initialData : action.payload.data,
 				sortBy: "",
 				sortDirection: 0,
-				...action.payload.metaData,
+				page: action.error ? state.page : action.payload.metaData.page,
+				pageSize: action.error ? state.pageSize : action.payload.metaData.pageSize,
+				total: action.error ? state.pageSize : action.payload.metaData.total,
 				inProgress: false,
 			};
 

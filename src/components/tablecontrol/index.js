@@ -118,13 +118,15 @@ function FilterDialog({ headings, filter, onFilter }) {
 									<Select
 										options={columnOptions}
 										value={key}
-										onChange={(value) =>
-											updateFilter(key, value)
-										}
+										disabled={true}
 									/>
 								</td>
 								<td>
-									<Input type="text" value={filter[key]} />
+									<Input
+										type="text"
+										disabled={true}
+										value={filter[key]}
+									/>
 								</td>
 							</tr>
 						);

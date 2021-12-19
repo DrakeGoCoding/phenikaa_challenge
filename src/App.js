@@ -42,7 +42,7 @@ function App() {
 	const onPageSizeChange = (pageSize) => {
 		store.dispatch({
 			type: CHANGE_PAGESIZE,
-			payload: pager(filter, page, pageSize),
+			payload: pager(filter, 1, pageSize),
 		});
 	};
 

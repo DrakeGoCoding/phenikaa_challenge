@@ -4,14 +4,7 @@ import { ReactComponent as NextSvg } from "../../assets/next.svg";
 import { ReactComponent as PrevSvg } from "../../assets/prev.svg";
 import "./index.css";
 
-export default function Pagination({
-	onPageChange,
-	total,
-	siblingCount = 1,
-	currentPage,
-	pageSize,
-	className,
-}) {
+export default function Pagination({ onPageChange, total, siblingCount = 1, currentPage, pageSize, className }) {
 	const paginationRange = usePagination({
 		currentPage,
 		total,

@@ -13,14 +13,8 @@ export default function Tooltip({ content, position = "bottom", children }) {
 	const handleMouseLeave = () => setVisible(false);
 
 	return (
-		<div
-			className="tooltip"
-			onMouseOver={handleMouseOver}
-			onMouseLeave={handleMouseLeave}
-		>
-			{visible && (
-				<div className={`tooltip-content ${position}`}>{content}</div>
-			)}
+		<div className="tooltip" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+			{visible && <div className={`tooltip-content ${position}`}>{content}</div>}
 			{children}
 		</div>
 	);

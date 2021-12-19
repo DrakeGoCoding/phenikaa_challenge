@@ -135,8 +135,7 @@ const initialState = {
 			ref: "sjrBestQuartile",
 			width: 180,
 			hidden: true,
-			sorter: (a, b) =>
-				a.sjrBestQuartile.localeCompare(b.sjrBestQuartile),
+			sorter: (a, b) => a.sjrBestQuartile.localeCompare(b.sjrBestQuartile),
 		},
 		rank: {
 			title: "rank",
@@ -183,12 +182,8 @@ export default function commonReducer(state = initialState, action) {
 
 		case DRAG_COLUMN: {
 			let updatedHeadings = Object.entries({ ...state.headings });
-			const from = updatedHeadings.findIndex(
-				([key, value]) => key === action.from
-			);
-			const to = updatedHeadings.findIndex(
-				([key, value]) => key === action.to
-			);
+			const from = updatedHeadings.findIndex(([key, value]) => key === action.from);
+			const to = updatedHeadings.findIndex(([key, value]) => key === action.to);
 			updatedHeadings = reorderArray(updatedHeadings, from, to);
 			return { ...state, headings: Object.fromEntries(updatedHeadings) };
 		}
@@ -208,8 +203,7 @@ export default function commonReducer(state = initialState, action) {
 
 		case TOGGLE_COLUMN: {
 			let updatedHeadings = { ...state.headings };
-			updatedHeadings[action.column].hidden =
-				!updatedHeadings[action.column].hidden;
+			updatedHeadings[action.column].hidden = !updatedHeadings[action.column].hidden;
 			return {
 				...state,
 				headings: updatedHeadings,

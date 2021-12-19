@@ -75,20 +75,8 @@
 	flex-direction: column;
 }
 
-.table-wrapper
-	thead
-	th
-	.th-content
-	.th-title
-	.th-utils-btn.th-sorter
-	.th-sorter-up.active,
-.table-wrapper
-	thead
-	th
-	.th-content
-	.th-title
-	.th-utils-btn.th-sorter
-	.th-sorter-down.active {
+.table-wrapper thead th .th-content .th-title .th-utils-btn.th-sorter .th-sorter-up.active,
+.table-wrapper thead th .th-content .th-title .th-utils-btn.th-sorter .th-sorter-down.active {
 	color: #000000;
 }
 

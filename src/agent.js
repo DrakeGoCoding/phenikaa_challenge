@@ -20,12 +20,7 @@ instance.interceptors.response.use(
 );
 
 const agent = {
-	fetch: (
-		filter = {},
-		page = 1,
-		pageSize = 100,
-		modelType = "journals",
-	) =>
+	fetch: (filter = {}, page = 1, pageSize = 100, modelType = "journals") =>
 		instance.post("/filters/filter/", null, {
 			params: {
 				modelType,

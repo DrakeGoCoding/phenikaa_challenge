@@ -1,12 +1,7 @@
 import { useEffect } from "react";
 import agent from "./agent";
 import Table from "./components/table";
-import {
-	APP_LOADED,
-	CHANGE_PAGE,
-	FILTER,
-	TOGGLE_COLUMN,
-} from "./store/actions";
+import { APP_LOADED, CHANGE_PAGE, FILTER, TOGGLE_COLUMN } from "./store/actions";
 import store from "./store";
 import "./App.css";
 import { useSelector } from "react-redux";
@@ -14,12 +9,10 @@ import TableControl from "./components/tablecontrol";
 import Pagination from "./components/pagination";
 
 function App() {
-	const { data, headings, inProgress, pager, filter, total, page, pageSize } =
-		useSelector((state) => state.common);
-	const onLoad = () => {
-		const pager = (filter, page, pageSize, modelType) =>
-			agent.fetch(filter, page, pageSize, modelType);
+	const { data, headings, inProgress, pager, filter, total, page, pageSize } = useSelector((state) => state.common);
 
+	const onLoad = () => {
+		const pager = (filter, page, pageSize, modelType) => agent.fetch(filter, page, pageSize, modelType);
 		store.dispatch({
 			type: APP_LOADED,
 			pager,

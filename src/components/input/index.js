@@ -19,6 +19,6 @@ const Input = forwardRef((props, ref) => {
 			onKeyUp={onKeyUp}
 		/>
 	);
-})
+});
 
 export default Input;

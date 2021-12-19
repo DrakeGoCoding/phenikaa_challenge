@@ -1,0 +1,13 @@
+.tag {
+	margin: 4px;
+	display: inline-block;
+	padding: 0 7px;
+	font-size: 12px;
+	line-height: 20px;
+	white-space: nowrap;
+	color: #389e0d;
+	background: #f6ffed;
+	border: 1px solid #b7eb8f;
+	border-radius: 2px;
+	transition: all 0.3s;
+}

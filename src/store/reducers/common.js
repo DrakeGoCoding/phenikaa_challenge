@@ -1,3 +1,4 @@
+import TagList from "../../components/tag/TagList";
 import { reorderArray } from "../../utils";
 import {
 	APP_LOADED,
@@ -45,37 +46,13 @@ const initialState = {
 			title: "categories",
 			ref: "categories",
 			width: 150,
-			render: (data) => {
-				return (
-					<div className="tag-list">
-						{data.map((item, index) => {
-							return (
-								<span className="tag" key={index}>
-									{item}
-								</span>
-							);
-						})}
-					</div>
-				);
-			},
+			render: (data) => <TagList data={data} />,
 		},
 		areasArray: {
 			title: "areas",
 			ref: "areas",
 			width: 150,
-			render: (data) => {
-				return (
-					<div className="tag-list">
-						{data.map((item, index) => {
-							return (
-								<span className="tag" key={index}>
-									{item}
-								</span>
-							);
-						})}
-					</div>
-				);
-			},
+			render: (data) => <TagList data={data} />,
 		},
 		publisher: {
 			title: "publisher",

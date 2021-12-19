@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import agent from "./agent";
 import Table from "./components/table";
-import { APP_LOADED, CHANGE_PAGE, FILTER, TOGGLE_COLUMN } from "./store/actions";
+import { APP_LOADED, CHANGE_PAGE, CHANGE_PAGESIZE, FILTER, TOGGLE_COLUMN } from "./store/actions";
 import store from "./store";
 import "./App.css";
 import { useSelector } from "react-redux";
@@ -39,6 +39,13 @@ function App() {
 		});
 	};
 
+	const onPageSizeChange = (pageSize) => {
+		store.dispatch({
+			type: CHANGE_PAGESIZE,
+			payload: pager(filter, page, pageSize),
+		});
+	};
+
 	useEffect(() => {
 		onLoad();
 	}, []);
@@ -49,11 +56,11 @@ function App() {
 			<Table data={data} headings={headings} inProgress={inProgress} />
 			{data && data.length > 0 ? (
 				<Pagination
-					className="pagination-bar"
 					currentPage={page}
 					pageSize={pageSize}
 					total={total}
 					onPageChange={onPageChange}
+					onPageSizeChange={onPageSizeChange}
 				/>
 			) : null}
 		</div>

@@ -4,6 +4,7 @@ import {
 	APP_LOADED,
 	ASYNC_START,
 	CHANGE_PAGE,
+	CHANGE_PAGESIZE,
 	DRAG_COLUMN,
 	FILTER,
 	SORT,
@@ -166,6 +167,7 @@ export default function commonReducer(state = initialState, action) {
 		}
 
 		case CHANGE_PAGE:
+		case CHANGE_PAGESIZE:
 			return {
 				...state,
 				data: action.error ? state.data : action.payload.data,

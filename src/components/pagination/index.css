@@ -41,3 +41,7 @@
 	background-color: transparent;
 	cursor: default;
 }
+
+.pagination-container .pagination-options {
+	letter-spacing: 1px;
+}

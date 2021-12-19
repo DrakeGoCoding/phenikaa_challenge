@@ -4,7 +4,7 @@ import { ReactComponent as NextSvg } from "../../assets/next.svg";
 import { ReactComponent as PrevSvg } from "../../assets/prev.svg";
 import "./index.css";
 
-export default function Pagination({ onPageChange, total, siblingCount = 1, currentPage, pageSize, className }) {
+function Pagination({ onPageChange, onPageSizeChange, total, siblingCount = 1, currentPage, pageSize }) {
 	const paginationRange = usePagination({
 		currentPage,
 		total,
@@ -16,21 +16,12 @@ export default function Pagination({ onPageChange, total, siblingCount = 1, curr
 		return null;
 	}
 
-	const onNext = () => {
-		onPageChange(currentPage + 1);
-	};
+	const lastPage = paginationRange[paginationRange.length - 1];
+	const onNext = () => onPageChange(currentPage + 1);
+	const onPrevious = () => onPageChange(currentPage - 1);
 
-	const onPrevious = () => {
-		onPageChange(currentPage - 1);
-	};
-
-	let lastPage = paginationRange[paginationRange.length - 1];
 	return (
-		<ul
-			className={classNames("pagination-container", {
-				[className]: className,
-			})}
-		>
+		<ul className="pagination-container">
 			<li
 				className={classNames("pagination-item", {
 					disabled: currentPage === 1,
@@ -68,6 +59,20 @@ export default function Pagination({ onPageChange, total, siblingCount = 1, curr
 			>
 				<NextSvg />
 			</li>
+			<li>
+				<select
+					className="pagination-item pagination-options"
+					value={pageSize}
+					onChange={(e) => onPageSizeChange(e.target.value)}
+				>
+					<option value={10}>10/page</option>
+					<option value={20}>20/page</option>
+					<option value={50}>50/page</option>
+					<option value={100}>100/page</option>
+				</select>
+			</li>
 		</ul>
 	);
 }
+
+export default Pagination;
